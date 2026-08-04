@@ -34,6 +34,7 @@ jobs:
             -DLLAMA_NATIVE=OFF `
             -DBUILD_SHARED_LIBS=OFF `
             -DOPENSSL_USE_STATIC_LIBS=ON `
+            -DOPENSSL_MSVC_STATIC_RT=ON `
             -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded" `
             -DLLAMA_STATIC=ON `
             -DLLAMA_BUILD_TESTS=OFF `
