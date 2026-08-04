@@ -39,13 +39,13 @@ jobs:
             -DLLAMA_BUILD_TESTS=OFF `
             -DBUILD_TESTING=OFF
 
-      - name: Build Binaries
+      - name: Build llama-server only
         run: |
-          cmake --build build --config Release --parallel
+          cmake --build build --config Release --parallel --target llama-server
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: llama-cpp-turboquant-i5-3340
           path: |
-            build/bin/Release/*.exe
+            build/bin/Release/llama-server.exe
