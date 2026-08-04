@@ -1,0 +1,42 @@
+name: Build Windows CPU Binary
+
+on:
+  # Allows you to trigger the build manually from the Actions tab
+  workflow_dispatch: 
+  # Automatically builds when you push to main/master (adjust branch name if needed)
+  push:
+    branches:
+      - main
+      - master
+      - feature/*
+
+jobs:
+  build:
+    name: Windows MSVC Build
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive # Critical for fetching ggml and other dependencies
+
+      - name: Configure CMake
+        run: |
+          cmake -B build `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DLLAMA_AVX=ON `
+            -DLLAMA_AVX2=ON `
+            -DLLAMA_NATIVE=OFF
+        
+      - name: Build Binaries
+        run: |
+          cmake --build build --config Release -j $(nproc)
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: llama-cpp-windows-cpu
+          path: |
+            build/bin/Release/*.exe
+            build/bin/Release/*.dll
